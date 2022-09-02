@@ -3,6 +3,7 @@ package springmvc;
 import org.hibernate.SessionFactory;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "movies")
@@ -54,9 +55,23 @@ public class MovieEntity {
         this.title = title;
     }
 
-    SessionFactory factory = new org.hibernate.cfg.Configuration()
-            .configure("hibernate.cfg.xml")
-            .addAnnotatedClass(MovieEntity.class)
-            .buildSessionFactory();
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "movie_id")
+    private List<VoteEntity> votes;
+
+    public List<VoteEntity> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<VoteEntity> votes) {
+        this.votes = votes;
+    }
+
+    public void addVote(VoteEntity vote) {
+        this.votes.add(vote);
+    }
+
 
 }
